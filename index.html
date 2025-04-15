@@ -157,7 +157,7 @@
         },
       })
       .then(() => {
-        window.location.href = "success.html";
+        window.location.href = `success.html?surname=${data.surname}&otherNames=${data.otherNames}`;
       })
       .catch((err) => {
         alert("Error occurred while submitting registration.");

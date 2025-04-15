@@ -1,31 +1,96 @@
 <!-- success.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registration Successful</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
       background-color: #e8f5e9;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
     }
     .box {
       background: white;
-      padding: 30px;
-      border-radius: 8px;
+      padding: 40px;
+      border-radius: 10px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+    }
+    .box h1 {
+      color: #2e7d32;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+    .box p {
+      font-size: 16px;
+      color: #333;
+    }
+    .print-btn {
+      margin-top: 25px;
+      padding: 12px 25px;
+      font-size: 15px;
+      background-color: #007b3d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .print-btn:hover {
+      background-color: #005f2d;
+    }
+    .slip {
+      text-align: left;
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px dashed #007b3d;
+      background-color: #f1f8f5;
     }
   </style>
 </head>
 <body>
   <div class="box">
-    <h1>Registration Successful!</h1>
-    <p>Thank you for registering. Your submission has been received.</p>
-    <a href="index.html">Go back</a>
+    <h1>✅ Registration Successful!</h1>
+    <p>Thank you for registering for the <strong>Youth Easter Retreat 2025</strong>.</p>
+    <p>Your information has been received. Kindly print your confirmation slip below.</p>
+
+    <div class="slip" id="confirmation-slip">
+      <h3>📄 Confirmation Slip</h3>
+      <p><strong>Event:</strong> Youth Easter Retreat 2025</p>
+      <p><strong>Region:</strong> DLBC Abeokuta Region</p>
+      <p><strong>Theme:</strong> EXPERIENCING THE POWER OF HIS RESURRECTION</p>
+      <p><strong>Name:</strong> <span id="fullName"></span></p>
+      <p><strong>Instructions:</strong> Present this slip at the registration stand on arrival.</p>
+    </div>
+
+    <button class="print-btn" onclick="printSlip()">🖨️ Print Confirmation Slip</button>
   </div>
+
+  <script>
+    // Pull from query parameters if passed (e.g., success.html?surname=John&otherNames=Doe)
+    const urlParams = new URLSearchParams(window.location.search);
+    const surname = urlParams.get('surname') || '';
+    const otherNames = urlParams.get('otherNames') || '';
+    const fullName = surname + ' ' + otherNames;
+    document.getElementById('fullName').textContent = fullName;
+
+    function printSlip() {
+      const slip = document.getElementById('confirmation-slip').innerHTML;
+      const win = window.open('', '', 'height=600,width=800');
+      win.document.write('<html><head><title>Print Confirmation</title>');
+      win.document.write('</head><body >');
+      win.document.write('<h2 style="text-align:center;">DLBC Youth Easter Retreat 2025</h2>');
+      win.document.write(slip);
+      win.document.write('</body></html>');
+      win.document.close();
+      win.print();
+    }
+  </script>
 </body>
 </html>
