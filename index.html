@@ -1,167 +1,106 @@
+<!-- success.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Youth Easter Retreat 2025 Registration</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Successful</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
+      background-color: #e8f5e9;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      padding: 20px;
+      align-items: center;
       min-height: 100vh;
       margin: 0;
     }
-    .container {
-      background: #ffffff;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      width: 100%;
-      max-width: 600px;
+    .box {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
     }
-    .header {
-      display: flex;
-      align-items: flex-start;
+    .box h1 {
+      color: #2e7d32;
+      font-size: 26px;
       margin-bottom: 10px;
     }
-    .logo {
-      width: 70px;
-      margin-right: 15px;
+    .box p {
+      font-size: 16px;
+      color: #333;
     }
-    .titles {
-      flex: 1;
-    }
-    .titles h1 {
-      font-size: 18px;
-      margin: 0;
-      color: #2c3e50;
-    }
-    .titles h2 {
+    .print-btn, .submit-btn {
+      margin-top: 25px;
+      padding: 12px 25px;
       font-size: 15px;
-      margin: 4px 0;
-      color: #34495e;
-    }
-    .theme {
-      font-size: 13px;
-      font-style: italic;
-      color: #555;
-      margin-bottom: 15px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-    input, select {
-      padding: 10px;
-      margin: 6px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-    button {
-      padding: 12px;
       background-color: #007b3d;
       color: white;
       border: none;
       border-radius: 6px;
-      font-size: 16px;
       cursor: pointer;
-      margin-top: 12px;
     }
-    button:hover {
+    .print-btn:hover, .submit-btn:hover {
       background-color: #005f2d;
+    }
+    .slip {
+      text-align: left;
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px dashed #007b3d;
+      background-color: #f1f8f5;
+    }
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="image/dlbc_logo.jpg" alt="Church Logo" class="logo">
-      <div class="titles">
-        <h1>Deeper Life Bible Church, Abeokuta Region</h1>
-        <h2>Youth Easter Retreat 2025 Registration Form</h2>
-      </div>
+  <div class="box">
+    <h1>✅ Registration Successful!</h1>
+    <p>Thank you for registering for the <strong>Youth Easter Retreat 2025</strong>.</p>
+    <p>Your information has been received. Kindly print your confirmation slip below.</p>
+
+    <div class="slip" id="confirmation-slip">
+      <h3>📄 Confirmation Slip</h3>
+      <p><strong>Event:</strong> Youth Easter Retreat 2025</p>
+      <p><strong>Region:</strong> DLBC Abeokuta Region</p>
+      <p><strong>Theme:</strong> EXPERIENCING THE POWER OF HIS RESURRECTION</p>
+      <p><strong>Name:</strong> <span id="fullName"></span></p>
+      <p><strong>Instructions:</strong> Present this slip at the registration stand on arrival.</p>
     </div>
-    <div class="theme">
-      Theme: <strong>EXPERIENCING THE POWER OF HIS RESURRECTION</strong>
-    </div>
-    <form id="regForm">
-      <input type="text" name="surname" placeholder="Surname" required />
-      <input type="text" name="otherNames" placeholder="Other Names" required />
 
-      <select name="gender" required>
-        <option value="">Select Gender</option>
-        <option value="Female">Female</option>
-        <option value="Male">Male</option>
-      </select>
-
-      <select name="ageGroup" required>
-        <option value="">Select Age Group</option>
-        <option value="Below 13">Below 13</option>
-        <option value="13-15">13-15</option>
-        <option value="16-18">16-18</option>
-        <option value="Above 18">Above 18</option>
-      </select>
-
-      <input type="text" name="address" placeholder="Residential Address" required />
-      <input type="text" name="school" placeholder="School" required />
-      <input type="text" name="class" placeholder="Class (e.g. SS1, JSS2)" required />
-
-      <label for="membership">Membership Status</label>
-      <select name="membership" id="membership" required>
-        <option value="">-- Select --</option>
-        <option value="Worker">Worker</option>
-        <option value="Member">Member</option>
-        <option value="Invitee">Invitee</option>
-      </select>
-
-      <input type="text" name="groupOfGroups" placeholder="Group of Groups" required />
-      <input type="text" name="group" placeholder="Group" required />
-      <input type="text" name="district" placeholder="District" required />
-      <input type="tel" name="mobile" placeholder="Mobile Number (or type 'None' if you don't have)" />
-
-      <button type="submit">Submit</button>
-    </form>
+    <button class="print-btn" onclick="printSlip()">🖨️ Print Confirmation Slip</button>
   </div>
 
   <script>
-    document.getElementById("regForm").addEventListener("submit", function (e) {
-      e.preventDefault();
+    // Pull from query parameters if passed (e.g., success.html?surname=John&otherNames=Doe)
+    const urlParams = new URLSearchParams(window.location.search);
+    const surname = urlParams.get('surname') || '';
+    const otherNames = urlParams.get('otherNames') || '';
+    const fullName = surname + ' ' + otherNames;
+    document.getElementById('fullName').textContent = fullName;
 
-      const form = e.target;
-      const data = {
-        surname: form.surname.value,
-        otherNames: form.otherNames.value,
-        gender: form.gender.value,
-        ageGroup: form.ageGroup.value,
-        address: form.address.value,
-        school: form.school.value,
-        class: form.class.value,
-        membership: form.membership.value,
-        groupOfGroups: form.groupOfGroups.value,
-        group: form.group.value,
-        district: form.district.value,
-        mobile: form.mobile.value.trim() || "None"
-      };
+    function printSlip() {
+      const slip = document.getElementById('confirmation-slip').innerHTML;
+      const win = window.open('', '', 'height=600,width=800');
+      win.document.write('<html><head><title>Print Confirmation</title>');
+      win.document.write('</head><body >');
+      win.document.write('<h2 style="text-align:center;">DLBC Youth Easter Retreat 2025</h2>');
+      win.document.write(slip);
+      win.document.write('</body></html>');
+      win.document.close();
+      win.print();
+    }
 
-      fetch("https://script.google.com/macros/s/AKfycbxEnHhcgyFPEv7xSP-W5v5WH8dRbptG6KQVrjx0rZ75UuJ8IopfGw8N9bCrbTYRGlypWg/exec", {
-        method: "POST",
-        mode: "no-cors", // Use 'cors' when hosted online to get responses
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then(() => {
-        window.location.href = `success.html?surname=${data.surname}&otherNames=${data.otherNames}`;
-      })
-      .catch((err) => {
-        alert("Error occurred while submitting registration.");
-        console.error(err);
+    // Enhance form submit button feedback if ever used here
+    document.querySelectorAll('.submit-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        button.classList.add('loading');
+        button.textContent = 'Submitting...';
       });
     });
   </script>
