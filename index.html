@@ -72,8 +72,9 @@
       cursor: pointer;
       margin-top: 12px;
     }
-    button:hover {
-      background-color: #005f2d;
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -89,6 +90,7 @@
     <div class="theme">
       Theme: <strong>EXPERIENCING THE POWER OF HIS RESURRECTION</strong>
     </div>
+
     <form id="regForm">
       <input type="text" name="surname" placeholder="Surname" required />
       <input type="text" name="otherNames" placeholder="Other Names" required />
@@ -122,9 +124,9 @@
       <input type="text" name="groupOfGroups" placeholder="Group of Groups" required />
       <input type="text" name="group" placeholder="Group" required />
       <input type="text" name="district" placeholder="District" required />
-      <input type="tel" name="mobile" placeholder="Mobile Number (or type 'None' if you don't have)" />
+      <input type="tel" name="mobile" placeholder="Mobile Number (or type 'None')" />
 
-      <button type="submit">Submit</button>
+      <button type="submit" id="submitBtn">Submit</button>
     </form>
   </div>
 
@@ -133,6 +135,10 @@
       e.preventDefault();
 
       const form = e.target;
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
       const data = {
         surname: form.surname.value,
         otherNames: form.otherNames.value,
@@ -150,18 +156,20 @@
 
       fetch("https://script.google.com/macros/s/AKfycbxEnHhcgyFPEv7xSP-W5v5WH8dRbptG6KQVrjx0rZ75UuJ8IopfGw8N9bCrbTYRGlypWg/exec", {
         method: "POST",
-        mode: "no-cors", // Use 'cors' when hosted online to get responses
+        mode: "no-cors",  // Important for CORS with Google Apps Script
         body: JSON.stringify(data),
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       })
       .then(() => {
-        window.location.href = `success.html?surname=${data.surname}&otherNames=${data.otherNames}`;
+        window.location.href = `success.html?surname=${encodeURIComponent(data.surname)}&otherNames=${encodeURIComponent(data.otherNames)}`;
       })
       .catch((err) => {
         alert("Error occurred while submitting registration.");
         console.error(err);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
       });
     });
   </script>

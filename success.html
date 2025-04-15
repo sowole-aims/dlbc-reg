@@ -32,7 +32,7 @@
       font-size: 16px;
       color: #333;
     }
-    .print-btn {
+    .print-btn, .submit-btn {
       margin-top: 25px;
       padding: 12px 25px;
       font-size: 15px;
@@ -42,7 +42,7 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    .print-btn:hover {
+    .print-btn:hover, .submit-btn:hover {
       background-color: #005f2d;
     }
     .slip {
@@ -51,6 +51,10 @@
       padding: 20px;
       border: 1px dashed #007b3d;
       background-color: #f1f8f5;
+    }
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -91,6 +95,14 @@
       win.document.close();
       win.print();
     }
+
+    // Enhance form submit button feedback if ever used here
+    document.querySelectorAll('.submit-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        button.classList.add('loading');
+        button.textContent = 'Submitting...';
+      });
+    });
   </script>
 </body>
 </html>
